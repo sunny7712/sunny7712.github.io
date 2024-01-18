@@ -1,5 +1,5 @@
 ## Skills
-<img src = "https://raw.githubusercontent.com/MikeCodesDotNET/ColoredBadges/master/svg/dev/languages/python.svg">
+<img src = "https://raw.githubusercontent.com/MikeCodesDotNET/ColoredBadges/master/svg/dev/languages/python.svg"> <img src = "https://raw.githubusercontent.com/Railly/ColoredBadges/master/svg/dev/languages/cpp.svg">
 
 ---
 
