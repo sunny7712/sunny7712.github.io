@@ -1,5 +1,7 @@
 # Portfolio
 
+---
+
 ## Skills
 
 ### Languages
