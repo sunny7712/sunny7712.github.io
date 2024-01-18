@@ -1,6 +1,7 @@
 ## Skills
-https://raw.githubusercontent.com/MikeCodesDotNET/ColoredBadges/master/svg/dev/languages/python.svg
+<img src = "https://raw.githubusercontent.com/MikeCodesDotNET/ColoredBadges/master/svg/dev/languages/python.svg">
 
+---
 
 ## Selected projects in Machine Learning
 
