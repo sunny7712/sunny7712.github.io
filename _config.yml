@@ -6,6 +6,7 @@ description: > # your text below (remove <br> elements if you don't need line br
   Second description 
   <br><br>
   <a href="https://www.linkedin.com/in/vamsi-k77/">View My LinkedIn Profile</a>
+  <br>
   <a href="https://www.kaggle.com/sunny7712">View My Kaggle Profile</a>
   
 remote_theme: pages-themes/minimal@v0.2.0
