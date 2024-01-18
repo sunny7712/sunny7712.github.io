@@ -9,7 +9,8 @@ description: > # your text below (remove <br> elements if you don't need line br
   <br><br>
   <a href="https://www.kaggle.com/sunny7712">View My Kaggle Profile</a>
   
-remote_theme: pages-themes/minimal@v0.2.0
-plugins:
-- jekyll-remote-theme
+theme: jekyll-theme-minimal
 google_analytics: UA-000000-0 # your Google Analytics tracking ID here
+
+colors:
+  crimson: '#900C3F'
