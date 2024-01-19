@@ -37,7 +37,7 @@ In this project, I built an Encoder-Decoder type model using PyTorch to generate
 
 Built a RAG pipeline to extract precise answers from class 12th chemistry text books when prompted with a question. Used Bling models which are specifically fine-tuned for RAG purposes and can run on a CPU. Built a minimalistic UI using streamlit.
 
-[![](https://img.shields.io/badge/Python-white?logo=Python)](#) [![](https://img.shields.io/badge/HuggingFace_Transformers-white?logo=huggingface)](#) [![](https://img.shields.io/badge/Streamlit-white?logo=streamlit)](#)
+[![](https://img.shields.io/badge/Python-white?logo=Python)](#) [![](https://img.shields.io/badge/Langchain-white?logo=langchain)](#) [![](https://img.shields.io/badge/HuggingFace_Transformers-white?logo=huggingface)](#) [![](https://img.shields.io/badge/Streamlit-white?logo=streamlit)](#)
 
 [Try live](https://huggingface.co/spaces/sunny77/Retrieval-Augmented-Generation-RAG)
 
