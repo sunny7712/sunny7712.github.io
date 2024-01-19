@@ -25,13 +25,23 @@
 
 ### Image Captioning in Pytorch
 
-Hate speech detection is the automated task of determining whether a piece of text contains hateful content. In this project, I built a classifier using PyTorch to fine-tune a BERT model.
+In this project, I built an Encoder-Decoder type model using PyTorch to generate captions for an Image. Image Features are extracted from a pretrained Resnet101 and then passed into LSTM layers to generate captions.
 
-[![](https://img.shields.io/badge/Python-white?logo=Python)](#) [![](https://img.shields.io/badge/Jupyter-white?logo=Jupyter)](#) [![](https://img.shields.io/badge/PyTorch-white?logo=pytorch)](#) [![](https://img.shields.io/badge/Twitter-white?logo=Twitter)](#) [![](https://img.shields.io/badge/HuggingFace_Transformers-white?logo=huggingface)](#)
+[![](https://img.shields.io/badge/Python-white?logo=Python)](#) [![](https://img.shields.io/badge/Jupyter-white?logo=Jupyter)](#) [![](https://img.shields.io/badge/PyTorch-white?logo=pytorch)](#)
 
-[View code on Colab](https://colab.research.google.com/drive/1d_q0vUpgwmbN7imUcdsbuDwJ61OuBjvO?usp=sharing)
+[View code on kaggle](https://www.kaggle.com/code/sunny7712/image-captioning)
 
 ---
+
+### NCERT Chat
+
+Built a RAG pipeline to extract precise answers from class 12th chemistry text books when prompted with a question. Used Bling models which are specifically fine-tuned for RAG purposes and can run on a CPU. Built a minimalistic UI using streamlit.
+
+[![](https://img.shields.io/badge/Python-white?logo=Python)](#) [![](https://img.shields.io/badge/HuggingFace_Transformers-white?logo=huggingface)](#) [![](https://img.shields.io/badge/Streamlit-white?logo=streamlit)](#)
+
+[Try live](https://huggingface.co/spaces/sunny77/Retrieval-Augmented-Generation-RAG)
+
+[View code on github](https://github.com/sunny7712/Retrieval-Augmented-Generation-RAG-)
 
 <!-- ### Examining panic-buying during the first wave of Covid-19, using mobility data
 The first wave of COVID-19 infections led to widespread stories of shortages in grocery stores as consumers stocked up in anticipation of lockdowns, a behaviour colloquially known as ‘panic buying’. In this project, I used mobility data from Google and Apple to empirically investigate the extent of panic buying in different countries.
