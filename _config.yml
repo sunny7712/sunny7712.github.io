@@ -6,8 +6,6 @@ description: > # your text below (remove <br> elements if you don't need line br
   Currently in my Pre-Final year at Indian Institute of Information Technology, Allahabad, studying Electronics and Communication Engineering. 
   <br><br>
   <a href="https://www.linkedin.com/in/vamsi-k77/">View My LinkedIn Profile</a>
-  <br><br>
-  <a href="https://www.kaggle.com/sunny7712">View My Kaggle Profile</a>
   
 remote_theme: pages-themes/minimal@v0.2.0
 plugins:
