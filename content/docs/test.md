@@ -6,3 +6,9 @@ title = 'Test'
 
 
 ### This is a test page!
+
+This is an inline equation: $E = mc^2$
+
+$$ 
+\int_0^\infty e^{-x} dx = 1 
+$$
