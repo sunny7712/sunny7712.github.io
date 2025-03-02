@@ -2,18 +2,28 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>My New Hugo Site</title>
-    <link>//localhost:1313/</link>
+    <link>http://localhost:1313/blog/</link>
     <description>Recent content on My New Hugo Site</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 28 Feb 2025 19:49:18 +0530</lastBuildDate>
-    <atom:link href="//localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Test</title>
-      <link>//localhost:1313/docs/test/</link>
+      <link>http://localhost:1313/blog/docs/test/</link>
       <pubDate>Fri, 28 Feb 2025 19:49:18 +0530</pubDate>
-      <guid>//localhost:1313/docs/test/</guid>
-      <description>&lt;h3 id=&#34;this-is-a-test-page&#34;&gt;This is a test page!&lt;/h3&gt;</description>
+      <guid>http://localhost:1313/blog/docs/test/</guid>
+      <description>&lt;h3 id=&#34;this-is-a-test-page&#34;&gt;This is a test page!&lt;/h3&gt;
+&lt;p&gt;This is an inline equation: $E = mc^2$&lt;/p&gt;
+&lt;p&gt;hello!&lt;/p&gt;
+&lt;p&gt;$$
+\int_0^\infty e^{-x} dx = 1
+$$&lt;/p&gt;
+&lt;p&gt;This is an inline equation: $a^* = x - b^*$&lt;/p&gt;
+&lt;p&gt;These are block equations:&lt;/p&gt;
+&lt;p&gt;$$
+a^* = x - b^*
+$$&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
