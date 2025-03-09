@@ -1,5 +1,60 @@
 baseURL: 'https://sunny7712.github.io/blog/'
 languageCode: 'en-us'
-title: 'My New Hugo Site'
+title: "Vamsi's Blog"
 theme: PaperMod
 math: true
+copyright: "© Vamsi"
+pagination:
+  pagerSize: 5
+
+enableInlineShortcodes: true
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+enableEmoji: true
+pygmentsUseClasses: true
+
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+params:
+  env: production  # Enables SEO-related features like OpenGraph, Twitter Cards, Schema
+  disableSpecial1stPost: true
+  description: "A personal blog by Vamsi."
+  author: "Vamsi"
+  defaultTheme: auto
+  ShowShareButtons: true
+  ShowReadingTime: true
+  ShowToc: true
+  ShowCodeCopyButtons: true
+  ShowPageNums: true
+  math: true
+
+  socialIcons:
+    - name: "github"
+      url: "https://github.com/sunny7712"
+    - name: "x"
+      url: "https://x.com/VamsiK76294"
+
+  editPost:
+    URL: "https://github.com/sunny7712/blog/tree/main/content"
+    Text: "Suggest Changes"
+    appendFilePath: true
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true  # Allows raw HTML inside markdown
+  highlight:
+    noClasses: false
+
+services:
+  instagram:
+    disableInlineCSS: true
+  x:
+    disableInlineCSS: true
