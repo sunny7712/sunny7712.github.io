@@ -23,13 +23,15 @@ So in this blog, I have four main goals:
 
 Let us start by introducing the problem. Suppose you have a housing dataset (classic example!) consisting of various features related to a house for example, number of bedrooms, proximity to school, house age etc. and also it’s price. Your task is to find the price of a house given a new set of features.
 
-![Example of California Housing Dataset](/assets/images/linear_regression/california_housing_dataset.png)
+{{< figure src="california_housing_dataset.png" alt="California Housing Dataset" caption="<p style='text-align:center;'>California Housing Dataset</p>" >}}
+
 
 Let's say we have $n$ such examples, meaning $n$ rows, and each row contains $d$ features (i.e., $d$ columns). We denote this by $X$.
 
 The output is a **scalar value**, representing the price of the house. Since there are $n$ examples, we have $n$ such values, one for each row. We denote this by $y$.
 
 Thus,
+
 - The shape of $X$ is $(n,d)$.
 - The shape of $y$ is $(n,1)$.
 
@@ -42,7 +44,8 @@ h_{\theta}(x^{(i)}) = \theta_{1} x_1^{(i)} + \theta_{2} x_2^{(i)} + \theta_{3} x
 $$
 
 where:
-- $h_θ(x^{(i)})$ is the price of the house for the ith row of X. 
+
+- $h_θ(x^{(i)})$ is the price of the house for the ith row of X.
 - $x_1^{(i)},x_2^{(i)},x_3^{(i)} \dots x_d^{(i)}$ are the **features of the house** (e.g., number of bedrooms, house age).
 - $θ_1,θ_2,θ_3 \dots θ_d$​ are the **weights** (parameters) that determine how much each feature contributes to the price.
 
