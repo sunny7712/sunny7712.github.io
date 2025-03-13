@@ -69,3 +69,55 @@ $$
 
 - $h_θ(X)$ and $\hat{y}$ are of the shape $(n,1)$ which are the prices of $n$ houses stored in a vector.
 
+## Loss Function
+
+From the above discussion, you must've figured out that the goal is to find the right value of $\theta$. That is, the $\theta$ which gives the correct value or **value as close as possible to** $y$, given $X$.
+
+Therefore, you can  say that if you're predicted vector $\hat{y}$ is close to the actual vector $y$, then you are proceding in the right direction with respect to  $\theta$.
+
+So, the goal is to minimize the difference between $y$ and $\hat{y}$. 
+
+$$
+\theta^{*} = \underset{\theta}{argmin} \sum_{i=1}^n |\hat{y}^{(i)} - y^{(i)}|
+$$
+
+where:
+
+- $\theta^{*}$ is the optimal(right) value of $\theta$.
+- $\hat{y} = X\theta$ represents the predicted values
+- $y$ is the actual output vector
+- The term $|\hat{y}^{(i)} - y^{(i)}|$ represents the represents the error (or residual) for each data point.
+- Modulus ensures that all errors are positive, so that underestimations and overestimations don’t cancel each other out.
+
+But, in practice, we DO NOT use the above equation. We use,
+
+$$
+\theta^{*} = \underset{\theta}{argmin} \sum_{i=1}^n (\hat{y}^{(i)} - y^{(i)})^2
+$$
+
+This is because:
+
+- **Mathematical convenience**: The squared function is differentiable everywhere, making it easier to differentiate and compute derivatives compared to the modulus function which is not differentiable at it's minimum (at zero).
+
+{{< figure src="squared_vs_modulus.png" alt=" Square function vs modulus function" caption="<p style='text-align:center;'>Square function vs modulus function</p>" >}}
+
+Now, in Machine Learning, a **Loss Function** measures how well our model's predictions match the actual values. It quantifies the error between the predicted output $\hat{y}$ and the actual output $y$.
+
+Let's represent Loss function with $J(\theta)$. That implies,
+
+$$
+J(\theta) = \sum_{i=1}^n (\hat{y}^{(i)} - y^{(i)})^2 
+$$
+$$
+J(\theta) = ||\hat{y} - y||_2
+$$
+$$
+\theta^{*} = \underset{\theta}{argmin} J(\theta)
+$$
+
+where $||\hat{y} - y||_2$ is the $L2$ norm (vector representation). 
+
+The above loss function is also called the **Least Squared Error**.
+
+> *Note*: Here, we derived the loss function of Linear Regression intuitively. There's also a more rigorous mathematical derivation which we will discuss later in the blog.
+
