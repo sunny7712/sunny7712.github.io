@@ -134,8 +134,8 @@
   "keywords": [
     
   ],
-  "articleBody": "I’m sure many of you must have read about and/or used Linear Regression, but people often remain unclear about it’s internal working.\nSo in this blog, I have four main goals:\nDerive the normal equation of LR in batch form. Along the way, I’ll go through a bit on how we tackle differentiation of vectors and matrices (matrix calculus) in the context of Machine Learning.\nJustify the Least Squares Error as the loss function for Linear Regression — why it makes sense mathematically and intuitively.\nExplain the need for gradient descent — why we use it and how it works.\nImplement everything we learn using python and numpy.\nIntroduction Let us start by introducing the problem. Suppose you have a housing dataset (classic example!) consisting of various features related to a house for example, number of bedrooms, proximity to school, house age etc. and also it’s price. Your task is to find the price of a house given a new set of features.\nCalifornia Housing Dataset\nLet’s say we have $n$ such examples, meaning $n$ rows, and each row contains $d$ features (i.e., $d$ columns). We denote this by $X$.\nThe output is a scalar value, representing the price of the house. Since there are $n$ examples, we have $n$ such values, one for each row. We denote this by $y$.\nThus,\nThe shape of $X$ is $(n,d)$. The shape of $y$ is $(n,1)$. Now, let us assume linear relationship between the price of the house and the features of the house. We can express this relationship as a function.\nFor a single example $x$ which is one single row of $X$,\n$$ h_{\\theta}(x^{(i)}) = \\theta_{1} x_1^{(i)} + \\theta_{2} x_2^{(i)} + \\theta_{3} x_3^{(i)} + \\dots + \\theta_{d} x_d^{(i)} $$\nwhere:\n$h_θ(x^{(i)})$ is the price of the house for the ith row of X. $x_1^{(i)},x_2^{(i)},x_3^{(i)} \\dots x_d^{(i)}$ are the features of the house (e.g., number of bedrooms, house age). $θ_1,θ_2,θ_3 \\dots θ_d$​ are the weights (parameters) that determine how much each feature contributes to the price. The above equation can also be written as,\n$$ h_{\\theta}(x^{(i)}) = x^{(i)} {\\theta} $$\n$x^{(i)}$ is of the shape $(1,d)$ and $θ$ is of the shape $(d,1)$ (you can see that the shapes are compatible and you can do matrix multiplication)\n$h_θ(x^{(i)})$ is of the shape $(1,1)$ which is nothing but a scalar and it is what you expect because it is the price of a single house.\nNow, we can stack all the examples (or rows) together and write it in a compact matrix form like,\n$$ \\hat{y} = h_{\\theta}(X) = X \\theta $$\n$X$ is of the shape $(n,d)$ and $θ$ is of the shape $(d,1)$.\n$h_θ(X)$ and $\\hat{y}$ are of the shape $(n,1)$ which are the prices of $n$ houses stored in a vector.\nLoss Function From the above discussion, you must’ve figured out that the goal is to find the right value of $\\theta$. That is, the $\\theta$ which gives the correct value or value as close as possible to $y$, given $X$.\nTherefore, you can say that if you’re predicted vector $\\hat{y}$ is close to the actual vector $y$, then you are proceding in the right direction with respect to $\\theta$.\nSo, the goal is to minimize the difference between $y$ and $\\hat{y}$.\n$$ \\theta^{*} = \\underset{\\theta}{argmin} \\sum_{i=1}^n |\\hat{y}^{(i)} - y^{(i)}| $$\nwhere:\n$\\theta^{*}$ is the optimal(right) value of $\\theta$. $\\hat{y} = X\\theta$ represents the predicted values $y$ is the actual output vector The term $|\\hat{y}^{(i)} - y^{(i)}|$ represents the represents the error (or residual) for each data point. Modulus ensures that all errors are positive, so that underestimations and overestimations don’t cancel each other out. But, in practice, we DO NOT use the above equation. We use,\n$$ \\theta^{*} = \\underset{\\theta}{argmin} \\sum_{i=1}^n (\\hat{y}^{(i)} - y^{(i)})^2 $$\nThis is because:\nMathematical convenience: The squared function is differentiable everywhere, making it easier to differentiate and compute derivatives compared to the modulus function which is not differentiable at it’s minimum (at zero). Square function vs modulus function\nNow, in Machine Learning, a Loss Function measures how well our model’s predictions match the actual values. It quantifies the error between the predicted output $\\hat{y}$ and the actual output $y$.\nLet’s represent Loss function with $J(\\theta)$. That implies,\n$$ J(\\theta) = \\sum_{i=1}^n (\\hat{y}^{(i)} - y^{(i)})^2 $$ $$ J(\\theta) = ||\\hat{y} - y||_2 $$ $$ \\theta^{*} = \\underset{\\theta}{argmin} J(\\theta) $$\nwhere $||\\hat{y} - y||_2$ is the $L2$ norm (vector representation).\nThe above loss function is also called the Least Squared Error.\nNote: Here, we derived the loss function of Linear Regression intuitively. There’s also a more rigorous mathematical derivation which we will discuss later in the blog.\n",
-  "wordCount" : "772",
+  "articleBody": "I’m sure many of you must have read about and/or used Linear Regression, but people often remain unclear about it’s internal working.\nSo in this blog, I have four main goals:\nDerive the normal equation of LR in batch form. Along the way, we’ll go through a bit on how we tackle differentiation of vectors and matrices in the context of Machine Learning.\nJustify the Least Squares Error as the loss function for Linear Regression — why it makes sense mathematically and intuitively.\nExplain the need for gradient descent — why we use it and how it works.\nImplement everything we learn using python and numpy.\nIntroduction Let us start by introducing the problem. Suppose you have a housing dataset (classic example!) consisting of various features related to a house for example, number of bedrooms, proximity to school, house age etc. and also it’s price. Your task is to find the price of a house given a new set of features.\nCalifornia Housing Dataset\nLet’s say we have $n$ such examples, meaning $n$ rows, and each row contains $d$ features (i.e., $d$ columns). We denote this by $X$.\nThe output is a scalar value, representing the price of the house. Since there are $n$ examples, we have $n$ such values, one for each row. We denote this by $y$.\nThus,\nThe shape of $X$ is $(n,d)$. The shape of $y$ is $(n,1)$. Now, let us assume linear relationship between the price of the house and the features of the house. We can express this relationship as a function.\nFor a single example $x$ which is one single row of $X$,\n$$ h_{\\theta}(x^{(i)}) = \\theta_{1} x_1^{(i)} + \\theta_{2} x_2^{(i)} + \\theta_{3} x_3^{(i)} + \\dots + \\theta_{d} x_d^{(i)} $$\nwhere:\n$h_θ(x^{(i)})$ is the price of the house for the ith row of X. $x_1^{(i)},x_2^{(i)},x_3^{(i)} \\dots x_d^{(i)}$ are the features of the house (e.g., number of bedrooms, house age). $θ_1,θ_2,θ_3 \\dots θ_d$​ are the weights (parameters) that determine how much each feature contributes to the price. The above equation can also be written as,\n$$ h_{\\theta}(x^{(i)}) = x^{(i)} {\\theta} $$\n$x^{(i)}$ is of the shape $(1,d)$ and $θ$ is of the shape $(d,1)$ (you can see that the shapes are compatible and you can do matrix multiplication)\n$h_θ(x^{(i)})$ is of the shape $(1,1)$ which is nothing but a scalar and it is what you expect because it is the price of a single house.\nNow, we can stack all the examples (or rows) together and write it in a compact matrix form like,\n$$ \\hat{y} = h_{\\theta}(X) = X \\theta $$\n$X$ is of the shape $(n,d)$ and $θ$ is of the shape $(d,1)$.\n$h_θ(X)$ and $\\hat{y}$ are of the shape $(n,1)$ which are the prices of $n$ houses stored in a vector.\nLoss Function From the above discussion, you must’ve figured out that the goal is to find the right value of $\\theta$. That is, the $\\theta$ which gives the correct value or value as close as possible to $y$, given $X$.\nTherefore, you can say that if you’re predicted vector $\\hat{y}$ is close to the actual vector $y$, then you are proceding in the right direction with respect to $\\theta$.\nSo, the goal is to minimize the difference between $y$ and $\\hat{y}$.\n$$ \\theta^{*} = \\underset{\\theta}{argmin} \\sum_{i=1}^n |\\hat{y}^{(i)} - y^{(i)}| $$\nwhere:\n$\\theta^{*}$ is the optimal(right) value of $\\theta$. $\\hat{y} = X\\theta$ represents the predicted values $y$ is the actual output vector The term $|\\hat{y}^{(i)} - y^{(i)}|$ represents the represents the error (or residual) for each data point. Modulus ensures that all errors are positive, so that underestimations and overestimations don’t cancel each other out. But, in practice, we DO NOT use the above equation. We use,\n$$ \\theta^{*} = \\underset{\\theta}{argmin} \\sum_{i=1}^n (\\hat{y}^{(i)} - y^{(i)})^2 $$\nThis is because:\nMathematical convenience: The squared function is differentiable everywhere, making it easier to differentiate and compute derivatives compared to the modulus function which is not differentiable at it’s minimum (at zero). Square function vs modulus function\nNow, in Machine Learning, a Loss Function measures how well our model’s predictions match the actual values. It quantifies the error between the predicted output $\\hat{y}$ and the actual output $y$.\nLet’s represent Loss function with $J(\\theta)$. That implies,\n$$ J(\\theta) = \\sum_{i=1}^n (\\hat{y}^{(i)} - y^{(i)})^2 $$ $$ J(\\theta) = ||\\hat{y} - y||_2 $$ $$ \\theta^{*} = \\underset{\\theta}{argmin} J(\\theta) $$\nwhere $||\\hat{y} - y||_2$ is the $L2$ norm (vector representation).\nThe above loss function is also called the Least Squared Error.\nNote: Here, we derived the loss function of Linear Regression intuitively. There’s also a more rigorous mathematical derivation which we will discuss later in the blog.\nSolution for the Equation If you can recall, to find the minimum of any function, we take the derivative of it and equate it to zero. That’s what we are going to do here.\nQuestion: You might ask, the derivative of a function is zero at it’s maximum point as well. Why couldn’t that be the case?\nAnswer: Well, the thing is when you take the second derivative of the function (the Hessian matrix), it turns out to be positive semi definite, which proves that loss function is convex and hence the point is a minimum point.\nThe proof of this outside the scope of this blog. For now, just know that the critical point (point at which first derivative is zero) is the minimum of the function.\nContinuing from the above equation, $$ J(\\theta) = ||\\hat{y} - y||_2 $$ $$ J(\\theta) = \\frac{1}{2} (X\\theta - y)^T (X\\theta - y) $$ Now, $$ \\nabla_θ J(θ) = 0 $$ $$ \\nabla_θ \\left[ \\frac{1}{2} (X\\theta - y)^T (X\\theta - y) \\right] = 0 $$ Expanding, we get: $$ \\frac{1}{2} \\nabla_θ \\left[ (X\\theta)^T X\\theta - (X\\theta)^T y - y^T (X\\theta) + y^T y \\right] = 0 $$\nSince $y^T y$ is independent of $\\theta$, its derivative is zero.\nAlso, by using the property $(ab)^T = b^Ta^T$, we get:\n$$ \\frac{1}{2} \\nabla_θ \\left[ \\theta^TX^TX\\theta - (X\\theta)^T y - y^T (X\\theta) \\right] = 0 $$\nNow, by using the property, if $a^Tb$ is a scalar $a^Tb = b^Ta$, we get: $$ \\frac{1}{2} \\nabla_θ \\left[ \\theta^TX^TX\\theta - y^T (X\\theta) - y^T (X\\theta) \\right] = 0 $$ $$ \\frac{1}{2} \\nabla_θ \\left[ \\theta^TX^TX\\theta - 2y^T (X\\theta) \\right] = 0 $$ $$ \\frac{1}{2} \\nabla_θ \\left[ \\theta^TX^TX\\theta - 2(X^Ty)^T\\theta \\right] = 0 $$\nNow, let us take a step back and look into vector and matrix differentiation.\nScalar First, Then Shape-Check Matrix calculus can look overwhelming, but one of the most effective ways to simplify derivations is to break the process into two manageable stages:\nScalar Differentiation: In this phase, you “pretend” that all the involved expressions are scalar functions—even if they originally represent vectors or matrices. Then, you can apply familiar differentiation rules (such as the power rule, product rule, and chain rule).\nRearrange and check shapes: Once you have a derivative expression based on the scalar reasoning, you will have to rearrange the terms so that the shapes are compatible and the final shape matches the shape of the expression you are differentiating with.\nContinuing the above derivation,\n$$ \\frac{1}{2} \\nabla_θ \\left[ \\theta^TX^TX\\theta - 2(X^Ty)^T\\theta \\right] = 0 $$\nUsing the rule $\\frac{d}{d\\theta}(a * \\theta^2) = 2a \\theta$,\n$$ \\frac{1}{2} \\left[2XX^T\\theta - 2(X^Ty) \\right] = 0 $$\n$$ XX^T\\theta - X^y = 0 $$\n$$ \\theta = (X^TX)^{-1}X^Ty $$\nProblems with the Normal equation Computational cost in high dimensions.\nIn the calculation of normal equation, you will have the calculate $(X^TX)^{-1}$. Taking the inverse1 of a matrix is a $O(d^3)$ operation which is very slow if the number of features of the input matrix is very large. Non invertability\nIn some cases, the matrix is not invertible (for example, when the features are highly collinear) and in such cases it becomes very hard to find the solution. Practical Memory Constraints\nFor very large data sets, storing and manipulating the dense $d\\times d$ matrix $X^TX$ may exceed available memory, even if an inverse could in principle be computed. Introducing Gradient Descent Footnotes Time complexity of Matrix Inversion ↩︎\n",
+  "wordCount" : "1338",
   "inLanguage": "en",
   "datePublished": "2025-02-28T19:49:18+05:30",
   "dateModified": "2025-02-28T19:49:18+05:30",
@@ -213,7 +213,7 @@
     <div class="post-description">
       In depth explanation of one of the most fundamental Machine Learning algorithm.
     </div>
-    <div class="post-meta"><span title='2025-02-28 19:49:18 +0530 IST'>February 28, 2025</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Vamsi&nbsp;|&nbsp;<a href="https://github.com/sunny7712/blog/tree/main/content/docs/linear_regression/index.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+    <div class="post-meta"><span title='2025-02-28 19:49:18 +0530 IST'>February 28, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;Vamsi&nbsp;|&nbsp;<a href="https://github.com/sunny7712/blog/tree/main/content/docs/linear_regression/index.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
 
 </div>
   </header> <div class="toc">
@@ -226,7 +226,17 @@
                 <li>
                     <a href="#introduction" aria-label="Introduction">Introduction</a></li>
                 <li>
-                    <a href="#loss-function" aria-label="Loss Function">Loss Function</a>
+                    <a href="#loss-function" aria-label="Loss Function">Loss Function</a></li>
+                <li>
+                    <a href="#solution-for-the-equation" aria-label="Solution for the Equation">Solution for the Equation</a></li>
+                <li>
+                    <a href="#scalar-first-then-shape-check" aria-label="Scalar First, Then Shape-Check">Scalar First, Then Shape-Check</a></li>
+                <li>
+                    <a href="#problems-with-the-normal-equation" aria-label="Problems with the Normal equation">Problems with the Normal equation</a></li>
+                <li>
+                    <a href="#introducing-gradient-descent" aria-label="Introducing Gradient Descent">Introducing Gradient Descent</a></li>
+                <li>
+                    <a href="#footnotes" aria-label="Footnotes">Footnotes</a>
                 </li>
             </ul>
         </div>
@@ -237,7 +247,7 @@
 <p>So in this blog, I have four main goals:</p>
 <ul>
 <li>
-<p>Derive the <strong>normal equation</strong> of LR in batch form. Along the way, I’ll go through a bit on how we tackle differentiation of vectors and matrices (matrix calculus) in the context of Machine Learning.</p>
+<p>Derive the <strong>normal equation</strong> of LR in batch form. Along the way, we’ll go through a bit on how we tackle differentiation of vectors and matrices in the context of Machine Learning.</p>
 </li>
 <li>
 <p><strong>Justify the Least Squares Error</strong> as the loss function for Linear Regression — why it makes sense mathematically and intuitively.</p>
@@ -249,6 +259,7 @@
 <p><strong>Implement everything</strong> we learn using python and numpy.</p>
 </li>
 </ul>
+<hr>
 <h2 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
 <p>Let us start by introducing the problem. Suppose you have a housing dataset (classic example!) consisting of various features related to a house for example, number of bedrooms, proximity to school, house age etc. and also it’s price. Your task is to find the price of a house given a new set of features.</p>
 <figure>
@@ -300,6 +311,7 @@ $$</p>
 <p>$h_θ(X)$ and $\hat{y}$ are of the shape $(n,1)$ which are the prices of $n$ houses stored in a vector.</p>
 </li>
 </ul>
+<hr>
 <h2 id="loss-function">Loss Function<a hidden class="anchor" aria-hidden="true" href="#loss-function">#</a></h2>
 <p>From the above discussion, you must&rsquo;ve figured out that the goal is to find the right value of $\theta$. That is, the $\theta$ which gives the correct value or <strong>value as close as possible to</strong> $y$, given $X$.</p>
 <p>Therefore, you can  say that if you&rsquo;re predicted vector $\hat{y}$ is close to the actual vector $y$, then you are proceding in the right direction with respect to  $\theta$.</p>
@@ -345,6 +357,105 @@ $$</p>
 <p>The above loss function is also called the <strong>Least Squared Error</strong>.</p>
 <blockquote>
 <p><em>Note</em>: Here, we derived the loss function of Linear Regression intuitively. There&rsquo;s also a more rigorous mathematical derivation which we will discuss later in the blog.</p></blockquote>
+<hr>
+<h2 id="solution-for-the-equation">Solution for the Equation<a hidden class="anchor" aria-hidden="true" href="#solution-for-the-equation">#</a></h2>
+<p>If you can recall, to find the minimum of any function, we take the derivative of it and equate it to zero. That&rsquo;s what we are going to do here.</p>
+<blockquote>
+<p><strong>Question</strong>: You might ask, the derivative of a function is zero at it&rsquo;s maximum point as well. Why couldn&rsquo;t that be the case?</p>
+<p><strong>Answer</strong>: Well, the thing is when you take the second derivative of the function (the Hessian matrix), it turns out to be positive semi definite, which proves that loss function is convex and hence the point is a minimum point.</p>
+<p>The proof of this outside the scope of this blog. For now, just know that the critical point (point at which first derivative is zero) is the minimum of the function.</p></blockquote>
+<p>Continuing from the above equation,
+$$
+J(\theta) = ||\hat{y} - y||_2
+$$
+$$
+J(\theta) = \frac{1}{2} (X\theta - y)^T (X\theta - y)
+$$
+Now,
+$$
+\nabla_θ J(θ) = 0
+$$
+$$
+\nabla_θ \left[ \frac{1}{2} (X\theta - y)^T (X\theta - y) \right] = 0
+$$
+Expanding, we get:
+$$
+\frac{1}{2} \nabla_θ \left[ (X\theta)^T X\theta - (X\theta)^T y - y^T (X\theta) + y^T y \right] = 0
+$$</p>
+<p>Since $y^T y$ is independent of $\theta$, its derivative is zero.</p>
+<p>Also, by using the property $(ab)^T = b^Ta^T$, we get:</p>
+<p>$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - (X\theta)^T y - y^T (X\theta) \right] = 0
+$$</p>
+<p>Now, by using the property, if $a^Tb$ is a scalar $a^Tb = b^Ta$, we get:
+$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - y^T (X\theta) - y^T (X\theta) \right] = 0
+$$
+$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - 2y^T (X\theta) \right] = 0
+$$
+$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - 2(X^Ty)^T\theta \right] = 0
+$$</p>
+<p>Now, let us take a step back and look into vector and matrix differentiation.</p>
+<hr>
+<h2 id="scalar-first-then-shape-check">Scalar First, Then Shape-Check<a hidden class="anchor" aria-hidden="true" href="#scalar-first-then-shape-check">#</a></h2>
+<p>Matrix calculus can look overwhelming, but one of the most effective ways to simplify derivations is to break the process into two manageable stages:</p>
+<ol>
+<li>
+<p><strong>Scalar Differentiation</strong>: In this phase, you “pretend” that all the involved expressions are scalar functions—even if they originally represent vectors or matrices. Then, you can apply familiar differentiation rules (such as the power rule, product rule, and chain rule).</p>
+</li>
+<li>
+<p><strong>Rearrange and check shapes</strong>: Once you have a derivative expression based on the scalar reasoning, you will have to rearrange the terms so that the shapes are compatible and the final shape matches the shape of the expression you are differentiating with.</p>
+</li>
+</ol>
+<p>Continuing the above derivation,</p>
+<p>$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - 2(X^Ty)^T\theta \right] = 0
+$$</p>
+<p>Using the rule $\frac{d}{d\theta}(a * \theta^2) = 2a \theta$,</p>
+<p>$$
+\frac{1}{2} \left[2XX^T\theta - 2(X^Ty) \right] = 0
+$$</p>
+<p>$$
+XX^T\theta - X^y = 0
+$$</p>
+<p>$$
+\theta = (X^TX)^{-1}X^Ty
+$$</p>
+<hr>
+<h2 id="problems-with-the-normal-equation">Problems with the Normal equation<a hidden class="anchor" aria-hidden="true" href="#problems-with-the-normal-equation">#</a></h2>
+<ol>
+<li>
+<p><strong>Computational cost in high dimensions.</strong></p>
+<ul>
+<li>In the calculation of normal equation, you will have the calculate $(X^TX)^{-1}$. Taking the inverse<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> of a matrix is a $O(d^3)$ operation which is very slow if the number of features of the input matrix is very large.</li>
+</ul>
+</li>
+<li>
+<p><strong>Non invertability</strong></p>
+<ul>
+<li>In some cases, the matrix is not invertible (for example, when the features are highly collinear) and in such cases it becomes very hard to find the solution.</li>
+</ul>
+</li>
+<li>
+<p><strong>Practical Memory Constraints</strong></p>
+<ul>
+<li>For very large data sets, storing and manipulating the dense $d\times d$ matrix $X^TX$ may exceed available memory, even if an inverse could in principle be computed.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="introducing-gradient-descent">Introducing Gradient Descent<a hidden class="anchor" aria-hidden="true" href="#introducing-gradient-descent">#</a></h2>
+<h2 id="footnotes">Footnotes<a hidden class="anchor" aria-hidden="true" href="#footnotes">#</a></h2>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="https://en.wikipedia.org/wiki/Computational_complexity_of_mathematical_operations#Matrix_algebra">Time complexity of Matrix Inversion</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
 
 
   </div>

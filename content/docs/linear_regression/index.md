@@ -11,13 +11,15 @@ I’m sure many of you must have read about and/or used Linear Regression, but p
 
 So in this blog, I have four main goals:
 
-- Derive the **normal equation** of LR in batch form. Along the way, I’ll go through a bit on how we tackle differentiation of vectors and matrices (matrix calculus) in the context of Machine Learning.
+- Derive the **normal equation** of LR in batch form. Along the way, we’ll go through a bit on how we tackle differentiation of vectors and matrices in the context of Machine Learning.
 
 - **Justify the Least Squares Error** as the loss function for Linear Regression — why it makes sense mathematically and intuitively.
 
 - **Explain the need for gradient descent** — why we use it and how it works.
 
 - **Implement everything** we learn using python and numpy.
+
+---
 
 ## Introduction
 
@@ -68,6 +70,8 @@ $$
 - $X$ is of the shape $(n,d)$ and $θ$ is of the shape $(d,1)$.
 
 - $h_θ(X)$ and $\hat{y}$ are of the shape $(n,1)$ which are the prices of $n$ houses stored in a vector.
+
+---
 
 ## Loss Function
 
@@ -121,3 +125,109 @@ The above loss function is also called the **Least Squared Error**.
 
 > *Note*: Here, we derived the loss function of Linear Regression intuitively. There's also a more rigorous mathematical derivation which we will discuss later in the blog.
 
+---
+
+## Solution for the Equation
+
+If you can recall, to find the minimum of any function, we take the derivative of it and equate it to zero. That's what we are going to do here. 
+> **Question**: You might ask, the derivative of a function is zero at it's maximum point as well. Why couldn't that be the case? 
+>
+> **Answer**: Well, the thing is when you take the second derivative of the function (the Hessian matrix), it turns out to be positive semi definite, which proves that loss function is convex and hence the point is a minimum point. 
+>
+>The proof of this outside the scope of this blog. For now, just know that the critical point (point at which first derivative is zero) is the minimum of the function.
+
+Continuing from the above equation,
+$$
+J(\theta) = ||\hat{y} - y||_2
+$$
+$$
+J(\theta) = \frac{1}{2} (X\theta - y)^T (X\theta - y) 
+$$
+Now,
+$$
+\nabla_θ J(θ) = 0
+$$
+$$
+\nabla_θ \left[ \frac{1}{2} (X\theta - y)^T (X\theta - y) \right] = 0
+$$
+Expanding, we get:
+$$
+\frac{1}{2} \nabla_θ \left[ (X\theta)^T X\theta - (X\theta)^T y - y^T (X\theta) + y^T y \right] = 0
+$$
+
+Since $y^T y$ is independent of $\theta$, its derivative is zero.
+
+Also, by using the property $(ab)^T = b^Ta^T$, we get:
+
+$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - (X\theta)^T y - y^T (X\theta) \right] = 0
+$$
+
+Now, by using the property, if $a^Tb$ is a scalar $a^Tb = b^Ta$, we get:
+$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - y^T (X\theta) - y^T (X\theta) \right] = 0
+$$
+$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - 2y^T (X\theta) \right] = 0
+$$
+$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - 2(X^Ty)^T\theta \right] = 0
+$$
+
+Now, let us take a step back and look into vector and matrix differentiation.
+
+---
+
+## Scalar First, Then Shape-Check
+
+Matrix calculus can look overwhelming, but one of the most effective ways to simplify derivations is to break the process into two manageable stages:
+
+1. **Scalar Differentiation**: In this phase, you “pretend” that all the involved expressions are scalar functions—even if they originally represent vectors or matrices. Then, you can apply familiar differentiation rules (such as the power rule, product rule, and chain rule).
+
+2. **Rearrange and check shapes**: Once you have a derivative expression based on the scalar reasoning, you will have to rearrange the terms so that the shapes are compatible and the final shape matches the shape of the expression you are differentiating with.
+
+Continuing the above derivation,
+
+$$
+\frac{1}{2} \nabla_θ \left[ \theta^TX^TX\theta - 2(X^Ty)^T\theta \right] = 0 
+$$
+
+Using the rule $\frac{d}{d\theta}(a * \theta^2) = 2a \theta$,
+
+$$
+\frac{1}{2} \left[2XX^T\theta - 2(X^Ty) \right] = 0
+$$
+
+$$
+XX^T\theta - X^y = 0
+$$
+
+$$
+\theta = (X^TX)^{-1}X^Ty
+$$
+
+---
+
+## Problems with the Normal equation
+
+1. **Computational cost in high dimensions.**
+
+    - In the calculation of normal equation, you will have the calculate $(X^TX)^{-1}$. Taking the inverse[^1] of a matrix is a $O(d^3)$ operation which is very slow if the number of features of the input matrix is very large.
+
+2. **Non invertability**
+
+    - In some cases, the matrix is not invertible (for example, when the features are highly collinear) and in such cases it becomes very hard to find the solution.
+
+3. **Practical Memory Constraints**
+
+    - For very large data sets, storing and manipulating the dense $d\times d$ matrix $X^TX$ may exceed available memory, even if an inverse could in principle be computed.
+
+---
+
+## Introducing Gradient Descent
+
+
+
+## Footnotes
+
+[^1]: [Time complexity of Matrix Inversion](https://en.wikipedia.org/wiki/Computational_complexity_of_mathematical_operations#Matrix_algebra)
