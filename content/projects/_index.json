@@ -1,0 +1,23 @@
+[
+  {
+    "id": "retrieval-search",
+    "title": "Retrieval Search for E-Commerce",
+    "year": "2024",
+    "role": "Solo",
+    "tags": ["ml", "side-project"],
+    "blurb": "Semantic search system for 20,000+ products using FAISS and the gte-base-1.5 embedding model. Includes a text-to-image search path with GPU-accelerated PyTorch inference, served behind a Streamlit UI.",
+    "stack": ["Python", "FAISS", "Transformers", "PyTorch", "Streamlit"],
+    "links": [{ "label": "GitHub", "url": "https://github.com/sunny7712" }],
+    "featured": true
+  },
+  {
+    "id": "dcgan",
+    "title": "DCGAN from Scratch",
+    "year": "2024",
+    "role": "Solo",
+    "tags": ["ml", "side-project"],
+    "blurb": "Implemented Deep Convolutional GANs from the seminal paper — generator, discriminator, transposed convolutions, batch norm — plus a full training pipeline with TensorBoard visualizations.",
+    "stack": ["PyTorch", "TensorBoard"],
+    "links": [{ "label": "GitHub", "url": "https://github.com/sunny7712" }]
+  }
+]

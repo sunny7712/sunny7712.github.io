@@ -1,0 +1,97 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Vamsi K." [ref=e5] [cursor=pointer]:
+      - /url: "#/"
+      - text: Vamsi K.
+    - navigation [ref=e7]:
+      - link "Home" [ref=e8] [cursor=pointer]:
+        - /url: "#/"
+      - link "Career" [ref=e9] [cursor=pointer]:
+        - /url: "#/career"
+      - link "Projects" [ref=e10] [cursor=pointer]:
+        - /url: "#/projects"
+      - link "Writing" [ref=e11] [cursor=pointer]:
+        - /url: "#/blog"
+      - link "Now" [ref=e12] [cursor=pointer]:
+        - /url: "#/now"
+      - link "About" [ref=e13] [cursor=pointer]:
+        - /url: "#/about"
+      - link "Contact" [ref=e14] [cursor=pointer]:
+        - /url: "#/contact"
+    - generic [ref=e15]:
+      - button "Open command palette" [ref=e16] [cursor=pointer]:
+        - img [ref=e17]
+      - button "Toggle dark mode" [ref=e20] [cursor=pointer]:
+        - img [ref=e21]
+  - generic [ref=e23]:
+    - generic [ref=e24]:
+      - generic [ref=e25]: Available for interesting conversations · Bengaluru, India
+      - heading "Vamsi Katta. software engineer." [level=1] [ref=e27]:
+        - text: Vamsi Katta.
+        - generic [ref=e28]: software engineer.
+      - paragraph [ref=e29]: Building infrastructure for the markets at Groww. Interested in databases, distributed systems, and the messy seams between them.
+      - generic [ref=e30]:
+        - link "See projects →" [ref=e31] [cursor=pointer]:
+          - /url: "#/projects"
+        - link "Read career" [ref=e32] [cursor=pointer]:
+          - /url: "#/career"
+        - link "GitHub ↗" [ref=e33] [cursor=pointer]:
+          - /url: https://github.com/sunny7712
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - heading "Selected work" [level=2] [ref=e36]
+        - generic [ref=e37]: — 6 total
+      - link "2025 · Lead engineer Embedded OLAP on Parquet Replaced a Redis-backed historical price cache with an embedded DuckDB service over partitioned Parquet on GCS. Sub-second on 500GB+ of candle data, no cluster to babysit. DuckDB · Parquet" [ref=e38] [cursor=pointer]:
+        - /url: "#/projects/duckdb-olap"
+        - generic [ref=e39]: 2025 · Lead engineer
+        - generic [ref=e40]:
+          - text: Embedded OLAP on Parquet
+          - generic [ref=e41]: Replaced a Redis-backed historical price cache with an embedded DuckDB service over partitioned Parquet on GCS. Sub-second on 500GB+ of candle data, no cluster to babysit.
+        - generic [ref=e42]: DuckDB · Parquet
+      - link "2024 · Solo Retrieval Search for E-Commerce Semantic search system for 20,000+ products using FAISS and the gte-base-1.5 embedding model. Includes a text-to-image search path with GPU-accelerated PyTorch inference, served behind a Streamlit UI. Python · FAISS" [ref=e43] [cursor=pointer]:
+        - /url: "#/projects/retrieval-search"
+        - generic [ref=e44]: 2024 · Solo
+        - generic [ref=e45]:
+          - text: Retrieval Search for E-Commerce
+          - generic [ref=e46]: Semantic search system for 20,000+ products using FAISS and the gte-base-1.5 embedding model. Includes a text-to-image search path with GPU-accelerated PyTorch inference, served behind a Streamlit UI.
+        - generic [ref=e47]: Python · FAISS
+      - link "all projects →" [ref=e49] [cursor=pointer]:
+        - /url: "#/projects"
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - heading "Recent writing" [level=2] [ref=e52]
+        - generic [ref=e53]: — 6 posts
+      - link "Mar 14, 2026 Why we replaced Redis with DuckDB for historical backtests A read-mostly workload, a growing dataset, and a cache that started feeling more like a database. The case for treating analytics as a separate animal. 2 min" [ref=e54] [cursor=pointer]:
+        - /url: "#/blog/redis-to-duckdb"
+        - generic [ref=e55]: Mar 14, 2026
+        - generic [ref=e56]:
+          - text: Why we replaced Redis with DuckDB for historical backtests
+          - generic [ref=e57]: A read-mostly workload, a growing dataset, and a cache that started feeling more like a database. The case for treating analytics as a separate animal.
+        - generic [ref=e58]: 2 min
+      - link "Feb 2, 2026 The case for embedded OLAP Distributed query engines are wonderful and necessary. Most workloads don't need one. 1 min" [ref=e59] [cursor=pointer]:
+        - /url: "#/blog/embedded-olap"
+        - generic [ref=e60]: Feb 2, 2026
+        - generic [ref=e61]:
+          - text: The case for embedded OLAP
+          - generic [ref=e62]: Distributed query engines are wonderful and necessary. Most workloads don't need one.
+        - generic [ref=e63]: 1 min
+      - link "Nov 9, 2025 Notes on Feign vs RestTemplate Why we deleted the RestTemplates and what we got back. 1 min" [ref=e64] [cursor=pointer]:
+        - /url: "#/blog/feign"
+        - generic [ref=e65]: Nov 9, 2025
+        - generic [ref=e66]:
+          - text: Notes on Feign vs RestTemplate
+          - generic [ref=e67]: Why we deleted the RestTemplates and what we got back.
+        - generic [ref=e68]: 1 min
+      - link "all writing →" [ref=e70] [cursor=pointer]:
+        - /url: "#/blog"
+  - contentinfo [ref=e71]:
+    - generic [ref=e72]: © 2026 Vamsi Katta — built from scratch.
+    - generic [ref=e73]:
+      - link "github" [ref=e74] [cursor=pointer]:
+        - /url: https://github.com/sunny7712
+      - link "twitter" [ref=e75] [cursor=pointer]:
+        - /url: https://x.com/vamsik77
+      - link "linkedin" [ref=e76] [cursor=pointer]:
+        - /url: https://linkedin.com/in/vamsi-k77
+      - link "contact" [ref=e77] [cursor=pointer]:
+        - /url: "#/contact"

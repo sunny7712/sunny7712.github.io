@@ -26,6 +26,19 @@ function App() {
   const [route, setRoute] = useState_a(parseHash);
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [cmdkOpen, setCmdkOpen] = useState_a(false);
+  const [dataReady, setDataReady] = useState_a(false);
+
+  // Load posts + projects from content/_index.json files
+  useEffect_a(() => {
+    Promise.all([
+      fetch("content/posts/_index.json").then((r) => r.json()),
+      fetch("content/projects/_index.json").then((r) => r.json()),
+    ]).then(([posts, projects]) => {
+      window.SITE.posts = posts;
+      window.SITE.projects = projects;
+      setDataReady(true);
+    }).catch(() => setDataReady(true));
+  }, []);
 
   // sync hash → state
   useEffect_a(() => {
@@ -80,6 +93,12 @@ function App() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [t.theme, t.dark, setTweak]);
+
+  if (!dataReady) return (
+    <div className="site" style={{ paddingTop: "var(--gap-8)", fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--fg-mute)", letterSpacing: "var(--label-tracking)", textTransform: "uppercase" }}>
+      Loading…
+    </div>
+  );
 
   // route resolution
   let view;

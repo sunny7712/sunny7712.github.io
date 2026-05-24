@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "first-six-months",
+    "title": "Things I learned in my first six months as an SDE",
+    "date": "2025-12-30",
+    "tags": ["career", "thoughts"],
+    "summary": "Mostly humbling, occasionally funny. Notes from the transition out of school.",
+    "readingTime": 1
+  },
+  {
+    "slug": "embeddings-quick-note",
+    "title": "A short note on dot-product similarity",
+    "date": "2025-08-15",
+    "tags": ["ml", "notes"],
+    "summary": "Why cosine similarity is just normalized dot product, and when you should care about the distinction.",
+    "readingTime": 2
+  }
+]

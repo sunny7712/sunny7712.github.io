@@ -203,12 +203,13 @@ function AboutPage({ onNavigate }) {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "var(--gap-6)", marginTop: "var(--gap-7)" }} className="about-grid">
         <article className="prose" style={{ maxWidth: "none" }}>
           <h2>How I work</h2>
+          <p>To be honest, I'm just trying to really figure out how to be a good engineer in these times of AI. </p>
           <p>I try to find the smallest thing that could possibly work and ship it. Then I try to find the smallest improvement that could possibly help, and ship that too. It's not a thrilling philosophy but it has a remarkably good track record.</p>
-          <p>Most of my favorite engineering moments have come from <em>removing</em> things — a service, a cache layer, a hand-rolled retry policy that could be a library. Subtraction is usually faster than addition, and almost always cheaper to operate.</p>
+          <p>Most of my favorite engineering moments have come from <em>removing</em> things — a service, a cache layer, or simplifying something overly verbose written by AI. Subtraction is usually faster than addition, and almost always cheaper to operate.</p>
           <h2>What I'm curious about</h2>
-          <p>Storage formats and the way they shape the systems above them. The cultural difference between OLTP and OLAP teams. Why so few engineers read the papers behind the tools they use every day. The strange overlap between writing good prose and writing good code — both reward cutting, both punish cleverness.</p>
+          <p>I'm curious about infra. I want to learn about networking, containerization, and distributed systems.</p>
           <h2>Outside work</h2>
-          <p>Filter coffee, long walks, slowly-improving photographs of birds I cannot reliably name. I read more nonfiction than I should and watch fewer films than I'd like.</p>
+          <p>Biryani, Gym, and going on Runs. I watch more films than I should and read fewer books than I'd like.</p>
         </article>
         <aside className="stack" style={{ position: "sticky", top: 24, alignSelf: "start" }}>
           <div className="media" style={{ aspectRatio: "4 / 5" }}>portrait · drop-in</div>
@@ -399,9 +400,8 @@ function formatDate(d) {
   } catch { return d; }
 }
 function readingTime(p) {
-  const text = p.body.map((b) => b.text || "").join(" ");
-  const words = text.trim().split(/\s+/).length;
-  return Math.max(1, Math.round(words / 220));
+  if (p.readingTime != null) return p.readingTime;
+  return 1;
 }
 
 Object.assign(window, {

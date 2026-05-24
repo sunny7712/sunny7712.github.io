@@ -1,4 +1,5 @@
-// Blog index + Blog post (ToC, reading time, scroll-spy).
+// Blog index + Blog post (ToC, reading time, scroll-spy, markdown body).
+// Body is fetched from content/posts/{slug}.md and rendered via marked + KaTeX auto-render.
 
 const { useState: useState_b, useEffect: useEffect_b, useMemo: useMemo_b, useRef: useRef_b } = React;
 
@@ -16,8 +17,8 @@ function BlogIndexPage({ onNavigate }) {
     <div className="page">
       <PageHeader
         eyebrow={"Writing · " + all.length + " posts"}
-        title="Mostly about databases. Sometimes about life."
-        sub="Notes-to-self that escaped into the open. I write to figure out what I think — these are the residue."
+        title="Mostly about Software Engineering. Sometimes about life."
+        sub="Notes-to-self that escaped into the open. I write to figure out what I think."
       />
 
       <div className="row-h" style={{ gap: 8, marginTop: "var(--gap-6)" }}>
@@ -35,7 +36,7 @@ function BlogIndexPage({ onNavigate }) {
             <div className="pr-inner">
               <div className="pr-meta">
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--fg-mute)", letterSpacing: "var(--label-tracking)" }}>{formatDate(p.date)}</div>
-                <div className="muted" style={{ fontFamily: "var(--font-mono)", fontSize: 11, marginTop: 4 }}>{readingTime(p)} min read</div>
+                <div className="muted" style={{ fontFamily: "var(--font-mono)", fontSize: 11, marginTop: 4 }}>{p.readingTime || 1} min read</div>
               </div>
               <div className="pr-main">
                 <div className="display" style={{ fontSize: 28, marginBottom: 6 }}>{p.title}</div>
@@ -65,37 +66,68 @@ function BlogIndexPage({ onNavigate }) {
 
 function BlogPostPage({ slug, onNavigate }) {
   const post = window.SITE.posts.find((p) => p.slug === slug);
+  const [bodyHtml, setBodyHtml] = useState_b(null);
+  const [headings, setHeadings] = useState_b([]);
   const [activeId, setActiveId] = useState_b(null);
   const [progress, setProgress] = useState_b(0);
   const articleRef = useRef_b(null);
 
-  // headings list
-  const headings = useMemo_b(() => {
-    if (!post) return [];
-    return post.body.filter((b) => b.type === "h2").map((b) => ({ text: b.text, id: slugify(b.text) }));
-  }, [post]);
+  // Fetch and parse markdown body
+  useEffect_b(() => {
+    setBodyHtml(null);
+    setHeadings([]);
+    fetch("content/posts/" + slug + ".md")
+      .then((r) => { if (!r.ok) throw new Error(); return r.text(); })
+      .then((md) => {
+        // Render markdown and inject IDs into h2 elements for scroll-spy
+        const html = window.marked.parse(md).replace(
+          /<h2>(.*?)<\/h2>/gs,
+          (_, inner) => `<h2 id="${slugify(inner.replace(/<[^>]+>/g, "").trim())}">${inner}</h2>`
+        );
+        // Extract headings from markdown source for ToC
+        const h = [...md.matchAll(/^## (.+)$/gm)].map((m) => ({
+          text: m[1].trim(),
+          id: slugify(m[1].trim()),
+        }));
+        setBodyHtml(html);
+        setHeadings(h);
+      })
+      .catch(() => {
+        setBodyHtml("<p style='color:var(--fg-mute);font-family:var(--font-mono);font-size:12px'>Body not found — add <code>content/posts/" + slug + ".md</code>.</p>");
+      });
+  }, [slug]);
 
-  // scroll-spy and progress
+  // KaTeX auto-render after body HTML lands in DOM
+  useEffect_b(() => {
+    if (!bodyHtml || !articleRef.current) return;
+    const run = () => {
+      if (!window.renderMathInElement) { setTimeout(run, 60); return; }
+      window.renderMathInElement(articleRef.current, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$",  right: "$",  display: false },
+        ],
+        throwOnError: false,
+      });
+    };
+    run();
+  }, [bodyHtml]);
+
+  // Scroll-spy + progress bar
   useEffect_b(() => {
     if (!post) return;
     const onScroll = () => {
-      // progress
       const el = articleRef.current;
       if (el) {
         const top = el.getBoundingClientRect().top + window.scrollY;
-        const h = el.scrollHeight;
-        const scrolled = Math.min(1, Math.max(0, (window.scrollY - top + window.innerHeight * 0.3) / h));
-        setProgress(scrolled * 100);
+        setProgress(Math.min(100, Math.max(0, (window.scrollY - top + window.innerHeight * 0.3) / el.scrollHeight * 100)));
       }
-      // spy
-      let current = headings[0]?.id || null;
+      let cur = headings[0]?.id || null;
       for (const h of headings) {
         const node = document.getElementById(h.id);
-        if (!node) continue;
-        const top = node.getBoundingClientRect().top;
-        if (top < 120) current = h.id; else break;
+        if (node && node.getBoundingClientRect().top < 120) cur = h.id; else break;
       }
-      setActiveId(current);
+      setActiveId(cur);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -111,7 +143,6 @@ function BlogPostPage({ slug, onNavigate }) {
     );
   }
 
-  // build prev/next
   const posts = window.SITE.posts;
   const idx = posts.findIndex((p) => p.slug === slug);
   const older = posts[(idx + 1) % posts.length];
@@ -119,20 +150,15 @@ function BlogPostPage({ slug, onNavigate }) {
 
   return (
     <div className="page">
-      {/* progress bar */}
-      <div style={{
-        position: "fixed", left: 0, top: 0, height: 2, width: progress + "%",
-        background: "var(--accent)", zIndex: 999, transition: "width 80ms linear"
-      }}></div>
+      <div style={{ position: "fixed", left: 0, top: 0, height: 2, width: progress + "%", background: "var(--accent)", zIndex: 999, transition: "width 80ms linear" }}></div>
 
       <div style={{ marginBottom: "var(--gap-4)" }}>
-        <a className="link muted" href="#/blog"
-           onClick={(e) => { e.preventDefault(); onNavigate("/blog"); }}>← writing</a>
+        <a className="link muted" href="#/blog" onClick={(e) => { e.preventDefault(); onNavigate("/blog"); }}>← writing</a>
       </div>
 
       <header style={{ marginBottom: "var(--gap-6)" }}>
         <div className="eyebrow" style={{ marginBottom: "var(--gap-3)" }}>
-          {formatDate(post.date)} · {readingTime(post)} min read
+          {formatDate(post.date)} · {post.readingTime || 1} min read
         </div>
         <h1 className="display" style={{ fontSize: "clamp(36px, 5.5vw, 60px)", marginBottom: "var(--gap-3)" }}>{post.title}</h1>
         <p className="muted" style={{ maxWidth: 680, fontSize: 18 }}>{post.summary}</p>
@@ -143,15 +169,10 @@ function BlogPostPage({ slug, onNavigate }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 220px", gap: "var(--gap-6)" }} className="post-grid">
         <article ref={articleRef} className="prose">
-          {post.body.map((b, i) => {
-            if (b.type === "p") return <p key={i}>{renderInline(b.text)}</p>;
-            if (b.type === "h2") return <h2 key={i} id={slugify(b.text)}>{b.text}</h2>;
-            if (b.type === "code") return <pre key={i}><code>{b.text}</code></pre>;
-            if (b.type === "math") return <BlockMath key={i} tex={b.text} />;
-            return null;
-          })}
-
-          {/* Signature */}
+          {bodyHtml === null
+            ? <p style={{ color: "var(--fg-mute)", fontFamily: "var(--font-mono)", fontSize: 12 }}>Loading…</p>
+            : <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+          }
           <hr style={{ border: 0, borderTop: "1px solid var(--rule)", margin: "var(--gap-6) 0 var(--gap-3)" }} />
           <p className="muted" style={{ fontSize: 14 }}>
             Got thoughts? Reach me on <a className="link" href={window.SITE.identity.socials[1].url} target="_blank" rel="noreferrer">Twitter</a> or drop a <a className="link" href="#/contact" onClick={(e) => { e.preventDefault(); onNavigate("/contact"); }}>note</a>.
@@ -163,8 +184,7 @@ function BlogPostPage({ slug, onNavigate }) {
             <div className="toc">
               <div className="toc-title">In this post</div>
               {headings.map((h) => (
-                <a key={h.id}
-                   href={"#" + h.id}
+                <a key={h.id} href={"#" + h.id}
                    className={activeId === h.id ? "active" : ""}
                    onClick={(e) => {
                      e.preventDefault();
@@ -179,7 +199,6 @@ function BlogPostPage({ slug, onNavigate }) {
         </aside>
       </div>
 
-      {/* prev/next */}
       <nav style={{ marginTop: "var(--gap-8)", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--gap-4)" }} className="pn-grid">
         <a className="pn-card" href={"#/blog/" + newer.slug} onClick={(e) => { e.preventDefault(); onNavigate("/blog/" + newer.slug); }}>
           <div className="label">← Newer</div>
@@ -192,11 +211,18 @@ function BlogPostPage({ slug, onNavigate }) {
       </nav>
 
       <style>{`
-        @media (max-width: 860px){
-          .post-grid{grid-template-columns:1fr!important;}
-          .post-aside{order:-1;}
-          .toc{position:static!important;}
-        }
+        .prose h2{font-family:var(--font-display);font-size:28px;font-weight:var(--display-weight);letter-spacing:var(--display-tracking);margin:var(--gap-6) 0 var(--gap-3);scroll-margin-top:80px;}
+        .prose p{margin:0 0 var(--gap-3);}
+        .prose pre{font-family:var(--font-mono);font-size:13px;background:var(--bg-soft);border:1px solid var(--rule);border-radius:var(--radius);padding:var(--gap-3) var(--gap-4);overflow-x:auto;white-space:pre;line-height:1.55;margin:var(--gap-4) 0;}
+        .prose code:not(pre code){font-family:var(--font-mono);font-size:.9em;background:var(--bg-soft);border:1px solid var(--rule);border-radius:3px;padding:1px 5px;}
+        .prose ul,.prose ol{padding-left:1.4em;margin:0 0 var(--gap-3);}
+        .prose li{margin-bottom:4px;}
+        .prose blockquote{margin:var(--gap-4) 0;padding:var(--gap-3) var(--gap-4);border-left:2px solid var(--accent);color:var(--fg-soft);}
+        .prose blockquote p{margin:0;}
+        .pn-card{padding:var(--gap-4);border:1px solid var(--rule);border-radius:var(--radius);transition:transform var(--speed) var(--ease),border-color var(--speed) var(--ease);}
+        .pn-card:hover{border-color:var(--fg);transform:translateY(-2px);}
+        @media (max-width: 860px){.post-grid{grid-template-columns:1fr!important;}.post-aside{order:-1;}.toc{position:static!important;}}
+        @media (max-width: 720px){.pn-grid{grid-template-columns:1fr!important;}}
       `}</style>
     </div>
   );
@@ -204,60 +230,6 @@ function BlogPostPage({ slug, onNavigate }) {
 
 function slugify(s) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
-
-// ── Math rendering via KaTeX ──────────────────────────────
-// renderInline turns a string into an array of nodes, treating $...$ as
-// inline math. Use it on any plain-string body content.
-function renderInline(text) {
-  if (!text || typeof text !== "string" || text.indexOf("$") === -1) return text;
-  const parts = [];
-  let i = 0;
-  let cursor = 0;
-  let key = 0;
-  while (i < text.length) {
-    if (text[i] === "$" && text[i + 1] !== "$") {
-      // find matching $
-      const end = text.indexOf("$", i + 1);
-      if (end === -1) break;
-      if (i > cursor) parts.push(text.slice(cursor, i));
-      parts.push(<InlineMath key={key++} tex={text.slice(i + 1, end)} />);
-      cursor = end + 1;
-      i = cursor;
-    } else {
-      i++;
-    }
-  }
-  if (cursor < text.length) parts.push(text.slice(cursor));
-  return parts.length ? parts : text;
-}
-
-function InlineMath({ tex }) {
-  const ref = useRef_b(null);
-  useEffect_b(() => {
-    const render = () => {
-      if (!ref.current) return;
-      if (!window.katex) { setTimeout(render, 50); return; }
-      try { window.katex.render(tex, ref.current, { throwOnError: false, displayMode: false }); }
-      catch (e) { if (ref.current) ref.current.textContent = tex; }
-    };
-    render();
-  }, [tex]);
-  return <span ref={ref} className="math-inline"></span>;
-}
-
-function BlockMath({ tex }) {
-  const ref = useRef_b(null);
-  useEffect_b(() => {
-    const render = () => {
-      if (!ref.current) return;
-      if (!window.katex) { setTimeout(render, 50); return; }
-      try { window.katex.render(tex, ref.current, { throwOnError: false, displayMode: true }); }
-      catch (e) { if (ref.current) ref.current.textContent = tex; }
-    };
-    render();
-  }, [tex]);
-  return <div ref={ref} className="math-block" style={{ margin: "var(--gap-4) 0", overflowX: "auto" }}></div>;
 }
 
 Object.assign(window, { BlogIndexPage, BlogPostPage, slugify });
