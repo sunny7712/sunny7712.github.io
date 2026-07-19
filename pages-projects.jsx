@@ -127,9 +127,18 @@ function ProjectDetailPage({ id, onNavigate }) {
         <p className="muted" style={{ maxWidth: 680, fontSize: 18 }}>{p.blurb}</p>
       </header>
 
-      <div className="media" style={{ aspectRatio: "16 / 8", marginBottom: "var(--gap-6)" }}>
-        screenshot · drop-in (1600 × 800)
-      </div>
+      {p.image ? (
+        <img
+          src={p.image}
+          alt={p.title + " screenshot"}
+          className="media"
+          style={{ aspectRatio: "16 / 8", marginBottom: "var(--gap-6)", width: "100%", objectFit: "cover" }}
+        />
+      ) : (
+        <div className="media" style={{ aspectRatio: "16 / 8", marginBottom: "var(--gap-6)" }}>
+          screenshot · drop-in (1600 × 800)
+        </div>
+      )}
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 240px", gap: "var(--gap-6)" }} className="proj-detail-grid">
         <div className="prose" style={{ maxWidth: "none" }}>

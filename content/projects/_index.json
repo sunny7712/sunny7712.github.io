@@ -1,5 +1,17 @@
 [
   {
+    "id": "guardian",
+    "title": "Guardian — Distributed Rate Limiter",
+    "year": "2026",
+    "role": "Solo",
+    "tags": ["backend", "side-project"],
+    "blurb": "Redis-backed rate-limiting library for Spring Boot. Token Bucket and Sliding Window Counter, atomic via Lua scripts, hot-reloadable config, configurable fail-open/fail-closed, full Prometheus/Grafana observability.",
+    "stack": ["Java", "Spring Boot", "Redis", "Lua", "k6"],
+    "image": "assets/projects/guardian.png",
+    "links": [{ "label": "GitHub", "url": "https://github.com/sunny7712/guardian" }],
+    "featured": true
+  },
+  {
     "id": "retrieval-search",
     "title": "Retrieval Search for E-Commerce",
     "year": "2024",
