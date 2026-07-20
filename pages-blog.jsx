@@ -17,8 +17,8 @@ function BlogIndexPage({ onNavigate }) {
     <div className="page">
       <PageHeader
         eyebrow={"Writing · " + all.length + " posts"}
-        title="Mostly about Software Engineering. Sometimes about life."
-        sub="Notes-to-self that escaped into the open. I write to figure out what I think."
+        title="Mostly about Software Engineering and things I find interesting."
+        sub=""
       />
 
       <div className="row-h" style={{ gap: 8, marginTop: "var(--gap-6)" }}>

@@ -12,8 +12,8 @@ window.SITE = {
     short: "Vamsi K",
     role: "Software Engineer",
     location: "Bengaluru, India",
-    tagline: "Building software for traders, at Groww. Interested in databases, distributed systems, and the messy seams between them.",
-    intro: "I'm a software engineer working around trading infrastructure. Most days I'm thinking about software architecture, writing clean, maintainable and extensible code, and how to make systems easier to operate. Before that I was at IIIT Allahabad studying electronics, where I got sidetracked into ML and never quite went back.",
+    tagline: "Building software for traders, at Groww. Interested in databases, distributed systems, infra and the messy seams between them.",
+    intro: "I'm a software engineer working around trading infrastructure. Most days I'm thinking about software architecture, writing clean, maintainable and extensible code, and how to make systems easier to operate. Before that I was at IIIT Allahabad studying electronics.",
     email: "sunny77katta2002@gmail.com",
     socials: [
       { label: "GitHub", handle: "sunny7712", url: "https://github.com/sunny7712" },
@@ -111,8 +111,7 @@ window.SITE = {
       {
         title: "Reading",
         items: [
-          "Database Internals, by Alex Petrov.",
-          "A Game of Thrones, by George R.R. Martin. I'm late to the party but enjoying it so far."
+          "Designing Data Intensive Applications By Martin Klepmann"
         ]
       },
       {

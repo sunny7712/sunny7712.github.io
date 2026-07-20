@@ -89,7 +89,7 @@ function CareerPage({ onNavigate }) {
       <PageHeader
         eyebrow="Career"
         title="Where I've worked, what I've shipped."
-        sub="Three companies, two internships, one full-time role, and a habit of leaving things better-documented than I found them."
+        sub="Three companies, two internships, one full-time role, and a habit of leaving things better than I found them."
       />
 
       <div className="stack-loose" style={{ marginTop: "var(--gap-7)" }}>
@@ -262,7 +262,7 @@ function ContactPage() {
       <PageHeader
         eyebrow="Contact"
         title="Drop me a line."
-        sub="Best for: interesting problems, infrastructure war stories, book recommendations. Reasonable response time within a working week."
+        sub="Best for: interesting problems, book recommendations. Reasonable response time within a working week."
       />
       <div style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: "var(--gap-6)", marginTop: "var(--gap-7)" }} className="contact-grid">
         <form className="stack" onSubmit={submit}>

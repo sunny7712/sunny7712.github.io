@@ -19,8 +19,8 @@ function ProjectsPage({ onNavigate }) {
     <div className="page">
       <PageHeader
         eyebrow={"Projects · " + all.length + " total"}
-        title="Things I've built, mostly to learn and sometimes for fun."
-        sub="A mix of side projects, and weekend experiments. Click through for the longer story."
+        title="Things I've built, mostly to learn."
+        sub="A mix of side projects, and experiments. Click through for the longer story."
       />
 
       <div className="row-h" style={{ gap: 8, marginTop: "var(--gap-6)" }}>
